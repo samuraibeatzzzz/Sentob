@@ -57,11 +57,11 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex items-start gap-2.5">
                 <Phone size={15} className="mt-0.5 shrink-0 text-gold-400" />
-                <span>+998 91 123 45 67</span>
+                <span>+998 91 330 01 31</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Mail size={15} className="mt-0.5 shrink-0 text-gold-400" />
-                <span>info@sentob.uz</span>
+                <span>mirjalolamonmurodov@gmail.com</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin size={15} className="mt-0.5 shrink-0 text-gold-400" />
