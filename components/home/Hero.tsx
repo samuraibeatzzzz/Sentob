@@ -16,7 +16,7 @@ export function Hero() {
       {/* Background Video */}
 <iframe
   className="absolute left-1/2 top-1/2 h-[56.25vw] min-h-full min-w-full w-[177.78vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-  src="https://youtu.be/-z-QvFWU-do?si=doY3shF9cPUEXO4l"
+  src="https://www.youtube.com/embed/-z-QvFWU-do?autoplay=1&mute=1&loop=1&playlist=-z-QvFWU-do&controls=0&rel=0&playsinline=1"
   title="Hero Video"
   allow="autoplay; encrypted-media"
   allowFullScreen
