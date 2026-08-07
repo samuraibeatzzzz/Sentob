@@ -13,17 +13,16 @@ export function Hero() {
       id="home"
       className="relative flex min-h-[100svh] items-end overflow-hidden bg-forest-950"
     >
-      {/* Background Video */}
-<video
-  autoPlay
-  muted
-  loop
-  playsInline
-  preload="auto"
-  className="absolute inset-0 h-full w-full object-cover"
->
-  <source src="/videos/hero.mp4" type="video/mp4" />
-</video>
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center scale-105"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1602088113235-229c19758e9c?q=80&w=2400&auto=format&fit=crop')",
+        }}
+        role="img"
+        aria-label="Sentob qishlog'i, Nurota tog'lari"
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/40 to-forest-950/10" />
       <div className="absolute inset-0 bg-gradient-to-b from-forest-950/60 via-transparent to-transparent" />
 

@@ -88,36 +88,35 @@ export default async function GuestHouseDetailPage({
             </div>
           </div>
 
-          <div className="mt-8 grid gap-12 lg:grid-cols-[1.5fr_1fr]">
-            <div>
-              {images.length > 0 && (
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-4 sm:grid-rows-2">
-                  <div className="relative h-72 overflow-hidden rounded-3xl sm:col-span-2 sm:row-span-2 sm:h-[520px]">
-                    <Image
-                      src={images[0]}
-                      alt={guestHouse.name}
-                      fill
-                      sizes="(min-width: 640px) 50vw, 100vw"
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                  {images.slice(1, 3).map((img, i) => (
-                    <div key={i}
-                      className="relative hidden h-[254px] overflow-hidden rounded-3xl sm:block">
-                      <Image
-                        src={img}
-                        alt={`${guestHouse.name} ${i + 2}`}
-                        fill
-                        sizes="25vw"
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
+          {images.length > 0 && (
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-4 sm:grid-rows-2">
+              <div className="relative h-72 overflow-hidden rounded-3xl sm:col-span-2 sm:row-span-2 sm:h-full">
+                <Image
+                  src={images[0]}
+                  alt={guestHouse.name}
+                  fill
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              {images.slice(1, 3).map((img, i) => (
+                <div key={i} className="relative hidden h-full overflow-hidden rounded-3xl sm:block">
+                  <Image
+                    src={img}
+                    alt={`${guestHouse.name} ${i + 2}`}
+                    fill
+                    sizes="25vw"
+                    className="object-cover"
+                  />
                 </div>
-              )}
+              ))}
+            </div>
+          )}
 
-              <div className="flex flex-wrap items-center gap-6 border-b border-forest-900/10 pb-8 pt-8 text-sm text-ink-600">
+          <div className="mt-12 grid gap-12 lg:grid-cols-[1.5fr_1fr]">
+            <div>
+              <div className="flex flex-wrap items-center gap-6 border-b border-forest-900/10 pb-8 text-sm text-ink-600">
                 <span className="flex items-center gap-2">
                   <Users size={16} className="text-forest-700" /> {guestHouse.max_guests} mehmongacha
                 </span>
@@ -144,32 +143,18 @@ export default async function GuestHouseDetailPage({
               )}
 
               {mapSrc && (
-  <div className="mt-10">
-    <h2 className="font-display text-xl font-medium text-forest-950">
-      Joylashuv
-    </h2>
-
-    <div className="mt-4 h-72 overflow-hidden rounded-3xl ring-1 ring-forest-900/10">
-      <iframe
-        src={mapSrc}
-        title={`${guestHouse.name} xaritada`}
-        className="h-full w-full border-0"
-        loading="lazy"
-      />
-    </div>
-
-    {/* SHU YERGA QO'YING 👇 */}
-
-    <a
-      href={`https://www.google.com/maps/dir/?api=1&destination=${guestHouse.latitude},${guestHouse.longitude}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-forest-700 px-6 py-4 text-base font-semibold text-white transition hover:bg-forest-800"
-    >
-      📍 Google Maps orqali marshrutni boshlash
-    </a>
-  </div>
-)}
+                <div className="mt-10">
+                  <h2 className="font-display text-xl font-medium text-forest-950">Joylashuv</h2>
+                  <div className="mt-4 h-72 overflow-hidden rounded-3xl ring-1 ring-forest-900/10">
+                    <iframe
+                      src={mapSrc}
+                      title={`${guestHouse.name} xaritada`}
+                      className="h-full w-full border-0"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="lg:sticky lg:top-28 lg:self-start">

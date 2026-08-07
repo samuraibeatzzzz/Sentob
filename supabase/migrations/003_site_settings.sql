@@ -23,10 +23,10 @@ create policy "site_settings_public_read" on public.site_settings
 
 insert into public.site_settings (key, value) values
   ('site_name', 'Sentob Turizm Qishlog''i'),
-  ('contact_phone', '+998 91 330 01 31'),
-  ('contact_email', 'mirjalolamonmurodov@gmail.com'),
+  ('contact_phone', '+998 91 123 45 67'),
+  ('contact_email', 'info@sentob.uz'),
   ('contact_telegram', 'https://t.me/sentob'),
-  ('contact_instagram', 'https://www.instagram.com/sentobsoy?igsh=MWV0eHoyM3Y0aHJxMA=='),
+  ('contact_instagram', 'https://instagram.com/sentob'),
   ('contact_facebook', 'https://facebook.com/sentob'),
   ('contact_youtube', 'https://youtube.com/@sentob'),
   ('contact_address', 'Sentob qishlog''i, Nurota tumani, Navoiy viloyati')

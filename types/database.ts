@@ -151,6 +151,13 @@ export type SiteSettingRow = {
   updated_at: string;
 };
 
+export type LoginAttemptRow = {
+  identifier: string;
+  attempt_count: number;
+  locked_until: string | null;
+  last_attempt_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -209,6 +216,12 @@ export type Database = {
         Row: SiteSettingRow;
         Insert: Partial<SiteSettingRow>;
         Update: Partial<SiteSettingRow>;
+        Relationships: [];
+      };
+      login_attempts: {
+        Row: LoginAttemptRow;
+        Insert: Partial<LoginAttemptRow>;
+        Update: Partial<LoginAttemptRow>;
         Relationships: [];
       };
     };

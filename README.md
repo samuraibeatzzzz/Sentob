@@ -99,6 +99,47 @@ Loyiha production-ready holatda — barcha 5 milestone yakunlangan. Quyida loyih
 
 **Translations bo'limi haqida eslatma:** hozirgi holatda barcha UZ/RU/EN matnlar kod ichidagi lug'at fayllarida (`lib/i18n/dictionaries/*.ts`) saqlanadi — bu tezkor va build-vaqtida tekshiriladigan yondashuv. To'liq DB-asoslangan Translations boshqaruv paneli (admin orqali matnlarni tahrirlash) katta arxitektura o'zgarishini talab qiladi; agar kerak bo'lsa, alohida qo'shimcha vazifa sifatida qo'shib beraman.
 
+## Admin panelning qayta qurilishi — oq ekran va redirect loop tuzatildi
+
+`/app/admin` bo'limi to'liq qayta qurildi (**faqat admin — ommaviy sayt o'zgarmadi**). Sabab: haqiqiy va tez-tez uchraydigan xato topildi.
+
+### Topilgan asosiy xato (redirect loop)
+
+Eski kodda `proxy.ts` faqat "tizimga kirganmi yo'qmi"ni tekshirar, rolni tekshirmasdi. Rol tekshiruvi faqat `requireAdmin()` ichida, sahifa darajasida bo'lardi. Natijada:
+
+1. Foydalanuvchi tizimga kirgan, lekin `profiles` jadvalida qatori yo'q yoki roli `admin`/`manager` emas.
+2. `proxy.ts` uni o'tkazib yuboradi (chunki faqat "user bormi" tekshiradi).
+3. `requireAdmin()` rolni tekshiradi → ruxsat yo'q → `/admin/login?error=forbidden`ga redirect qiladi.
+4. Lekin sessiya hali ham amalda! `proxy.ts` `/admin/login`da "user bor" deb ko'radi va uni yana `/admin`ga qaytaradi.
+5. **2-4 qadamlar cheksiz takrorlanadi** — brauzerda "ERR_TOO_MANY_REDIRECTS" yoki oq ekran.
+
+### Tuzatish
+
+- `proxy.ts` endi **rolni ham shu yerda**, bitta so'rovda tekshiradi. Agar sessiya bor-u rol noto'g'ri bo'lsa — **avval `signOut()` qilinadi**, keyingina `/admin/login`ga yo'naltiriladi. Shunday qilib keyingi so'rovda sessiya endi yo'q, va hech qanday loop mumkin emas.
+- `requireAdmin()` — ikkinchi mudofaa qatlami sifatida qoldi (har so'rovda rolni qaytadan DB'dan o'qiydi), lekin u ham xuddi shunday "signOut keyin redirect" mantig'iga ega, shuning uchun ikkalasi hech qachon ziddiyatga kirmaydi.
+- Supabase muhit o'zgaruvchilari sozlanmagan bo'lsa, `proxy.ts` va `lib/supabase/{server,admin}.ts` endi tushunarli xato qaytaradi (oldin "oq ekran" yoki tushunarsiz crash bo'lardi).
+- `app/admin/error.tsx` va `app/admin/(dashboard)/error.tsx` qo'shildi — endi har qanday kutilmagan xato **hech qachon oq ekran emas**, balki tushunarli xabar va "Qayta urinish" tugmasi bilan ko'rsatiladi.
+- `app/admin/(dashboard)/loading.tsx` — sahifalar orasida navigatsiya paytida skelet ko'rinish.
+
+### Login va sessiya — endi Server Action orqali
+
+- Eski versiya: login formasi brauzer tomonida (`createSupabaseBrowserClient`) ishlardi.
+- Yangi versiya: `lib/admin/actions/login.ts` — **server tomonidagi** Server Action. Bu login jarayonini butunlay serverga o'tkazadi, sessiya cookie'lari to'g'ridan-to'g'ri serverda o'rnatiladi (race condition xavfisiz), va rate limiting shu yerda amalga oshiriladi.
+
+### Rate limiting (5 urinish → 15 daqiqa blok)
+
+- Yangi jadval: `supabase/migrations/004_login_rate_limit.sql` → `login_attempts` (faqat service-role orqali, RLS yoqilgan, ommaviy siyosat yo'q).
+- Email bo'yicha hisoblanadi (katta-kichik harflarga sezgir emas). 5 marta noto'g'ri parol/email → 15 daqiqaga bloklanadi, muvaffaqiyatli kirishda hisoblagich nolga tushadi.
+- Amalga oshirilishi: `lib/admin/rate-limit.ts`.
+
+### Responsive UI
+
+- `AdminSidebar` qayta qurildi: desktop'da doimiy panel, mobil'da hamburger tugma + slide-in drawer (ommaviy saytdagi mobil menyu uslubiga mos).
+
+### Bu qayta qurish uchun qo'shimcha SQL
+
+SQL Editor'da `supabase/migrations/004_login_rate_limit.sql` faylini ishga tushiring (001–003'dan keyin, bir marta).
+
 ## Milestone 5'ni ishga tushirish (Weather, PWA, Dark Mode, SEO)
 
 ### OpenWeather
