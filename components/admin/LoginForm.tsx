@@ -19,17 +19,18 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
     setError(null);
 
     const supabase = createSupabaseBrowserClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+   const { error: signInError } = await supabase.auth.signInWithPassword({
+  email,
+  password,
+});
 
-    if (signInError) {
-      setError("Email yoki parol noto'g'ri");
-      setLoading(false);
-      return;
-    }
+if (signInError) {
+  setError("Email yoki parol noto'g'ri");
+  setLoading(false);
+  return;
+}
 
-    router.replace(redirectTo || "/admin");
-    router.refresh();
-  }
+window.location.href = "/admin";
 
   return (
     <form onSubmit={onSubmit} className="mt-6 space-y-4">
